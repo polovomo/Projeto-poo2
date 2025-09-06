@@ -10,7 +10,7 @@ import java.awt.event.KeyEvent;
 import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-import utils.util;
+import utils.Util;
 
 /**
  *
@@ -25,6 +25,11 @@ public class FrLogin extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         getRootPane().setDefaultButton(btnEntrar);
+      
+    }
+
+    FrLogin(FrCadUsuario aThis, boolean rootPaneCheckingEnabled) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
@@ -78,6 +83,16 @@ public class FrLogin extends javax.swing.JFrame {
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         btnCadastrar.setText("Cadastrar");
+        btnCadastrar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnCadastrarMouseClicked(evt);
+            }
+        });
+        btnCadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCadastrarActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnCadastrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(166, 354, 110, 36));
 
         lblBemVindo.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
@@ -226,8 +241,20 @@ public class FrLogin extends javax.swing.JFrame {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
    
-     this.setIconImage(util.getIcone()); 
+     this.setIconImage(Util.getIcone()); 
     }//GEN-LAST:event_formWindowOpened
+
+    private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
+ 
+    }//GEN-LAST:event_btnCadastrarActionPerformed
+
+    private void btnCadastrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCadastrarMouseClicked
+    FrCadUsuario telaCadUsuario = new FrCadUsuario(this, rootPaneCheckingEnabled);
+    this.dispose();
+    telaCadUsuario.setVisible(true);
+   
+    
+    }//GEN-LAST:event_btnCadastrarMouseClicked
 
     private boolean verificarCampo(){
         if(editUsuario.getText().isEmpty()){
@@ -242,6 +269,7 @@ public class FrLogin extends javax.swing.JFrame {
     }
     
     
+     
     
     private void logar(){
      if(!verificarcampos()){
@@ -250,7 +278,7 @@ public class FrLogin extends javax.swing.JFrame {
         
     //ler campos
        String usuario = editUsuario.getText();
-       String senha = new String (editSenha.getPassword());
+       String senha = Util.calcularHash(new String(editSenha.getPassword()));
        
        
        //guardar dados

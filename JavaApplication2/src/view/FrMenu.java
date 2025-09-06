@@ -7,7 +7,7 @@ package view;
 
 import java.net.URL;
 import javax.swing.ImageIcon;
-import utils.util;
+import utils.Util;
 
 /**
  *
@@ -21,6 +21,10 @@ public class FrMenu extends javax.swing.JFrame {
     public FrMenu() {
         initComponents();
         this.setLocationRelativeTo(null);
+    }
+
+    FrMenu(FrCadUsuario aThis, boolean rootPaneCheckingEnabled) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
@@ -39,7 +43,7 @@ public class FrMenu extends javax.swing.JFrame {
         jMenuItem2 = new javax.swing.JMenuItem();
         miSair = new javax.swing.JMenuItem();
         mnConsultas = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        miConUsuario = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         mnSobre = new javax.swing.JMenu();
 
@@ -92,13 +96,13 @@ public class FrMenu extends javax.swing.JFrame {
 
         mnConsultas.setText("Consultas");
 
-        jMenuItem1.setText("Usuarios");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        miConUsuario.setText("Usuarios");
+        miConUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                miConUsuarioActionPerformed(evt);
             }
         });
-        mnConsultas.add(jMenuItem1);
+        mnConsultas.add(miConUsuario);
 
         jMenuItem3.setText("???");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
@@ -127,18 +131,19 @@ public class FrMenu extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    private void miConUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miConUsuarioActionPerformed
+     FrConUsuario telaComUsuario = new FrConUsuario(this, rootPaneCheckingEnabled);
+     telaComUsuario.setVisible(true);
+    }//GEN-LAST:event_miConUsuarioActionPerformed
 
     private void miSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miSairActionPerformed
-        this.dispose();
+       System.exit(0);
         
         
     }//GEN-LAST:event_miSairActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        this.setIconImage(util.getIcone()); 
+        this.setIconImage(Util.getIcone()); 
 
         // TODO add your handling code here:
     }//GEN-LAST:event_formWindowOpened
@@ -183,10 +188,10 @@ public class FrMenu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JMenuItem miConUsuario;
     private javax.swing.JMenuItem miSair;
     private javax.swing.JMenuItem miUsuario;
     private javax.swing.JMenu mnCadastros;
