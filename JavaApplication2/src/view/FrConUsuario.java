@@ -6,6 +6,7 @@
 package view;
 import controller.UsuarioController;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Usuario;
 import utils.Util;
@@ -44,6 +45,7 @@ public class FrConUsuario extends javax.swing.JDialog {
         editFiltro = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         btnAlterar = new javax.swing.JButton();
+        btnDesfazer = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
@@ -141,12 +143,21 @@ public class FrConUsuario extends javax.swing.JDialog {
             }
         });
 
+        btnDesfazer.setText("Desfazer");
+        btnDesfazer.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnDesfazerMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(123, Short.MAX_VALUE)
+                .addContainerGap(30, Short.MAX_VALUE)
+                .addComponent(btnDesfazer)
+                .addGap(18, 18, 18)
                 .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(22, 22, 22))
         );
@@ -154,7 +165,9 @@ public class FrConUsuario extends javax.swing.JDialog {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(303, Short.MAX_VALUE)
-                .addComponent(btnAlterar)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAlterar)
+                    .addComponent(btnDesfazer))
                 .addGap(64, 64, 64))
         );
 
@@ -328,12 +341,42 @@ public class FrConUsuario extends javax.swing.JDialog {
     //passo pra tela e alteração o codigo do usuario selecionado
     telaAlterar.setPkUsuario(pkUsuario);
     telaAlterar.setVisible(true);
+    
+    
+    pesquisar();
         
     }//GEN-LAST:event_btnAlterarMouseClicked
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnAlterarActionPerformed
+
+    private void btnDesfazerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDesfazerMouseClicked
+    //valida se tem alguma linha selecionada na grade -1
+    if(tblUsuario.getSelectedRow() == -1){
+        return;//encerra função
+    }
+    
+    //pega o numero da linha selecionada
+    int posicaoLinha = tblUsuario.getSelectedRow();
+    
+    String celula = tblUsuario.getValueAt(posicaoLinha, 0).toString();
+    
+    //pegar o valor da celula na grade, a coluna 0(Codigo)
+    int pkUsuario = Integer.parseInt(celula);
+    
+    UsuarioController controller = new UsuarioController();
+        
+   if(controller.Deletar(pkUsuario)){
+       JOptionPane.showMessageDialog(null, "Usuario deletado");
+       pesquisar();
+   }else{
+       JOptionPane.showMessageDialog(null, "Falha ao deletar");
+   }
+    
+   
+        
+    }//GEN-LAST:event_btnDesfazerMouseClicked
 
     
     private void pesquisar(){
@@ -420,6 +463,7 @@ public class FrConUsuario extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlterar;
+    private javax.swing.JButton btnDesfazer;
     private javax.swing.JButton btnPesquisar;
     private javax.swing.JButton btnVoltarConUsuario;
     private javax.swing.JComboBox<String> cbxFiltro;

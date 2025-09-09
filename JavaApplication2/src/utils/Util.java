@@ -5,15 +5,26 @@
  */
 package utils;
 
+import java.awt.Graphics2D;
 import javax.swing.ImageIcon;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -90,5 +101,61 @@ public class Util {
             System.err.println("Algoritmo não encontrado !!!");
         }
         return hashSHA1;
+    }
+
+    public static File escolherImagem() {
+        File arquivo = null;
+
+        //cria um escolhedor de arquivo
+        JFileChooser exploradorArquivo = new JFileChooser();
+
+        exploradorArquivo.setDialogTitle("escolha um arquivo");
+
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("imagens", "jpg", "jpeg", "png");
+
+        exploradorArquivo.setFileFilter(filtro);
+
+        exploradorArquivo.setMultiSelectionEnabled(false);
+
+        int resultado = exploradorArquivo.showOpenDialog(null);
+
+        if (resultado == JFileChooser.APPROVE_OPTION) {
+            arquivo = exploradorArquivo.getSelectedFile();
+        }
+
+        return arquivo;
+    }
+
+    public static Icon converterFileToIcon(File arquivo) {
+        ImageIcon icon = new ImageIcon(arquivo.getAbsolutePath());
+        return icon;
+    }
+
+    public static ImageIcon redimensionarImagem(Icon icone, int largura, int altura) {
+        Image imagemOriginal = ((ImageIcon) icone).getImage();
+
+        Image novaImagem = imagemOriginal.getScaledInstance(largura, altura, Image.SCALE_SMOOTH);
+
+        return new ImageIcon(novaImagem);
+    }
+
+    public static byte[] converterIconToBytes(Icon icon) {
+        BufferedImage image = new BufferedImage(
+                icon.getIconWidth(),
+                icon.getIconHeight(),
+                BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = image.createGraphics();
+        icon.paintIcon(null, g2d, 0, 0);
+        g2d.dispose();
+
+        ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
+        try {
+            ImageIO.write(image, "png", byteArray);
+
+        } catch (IOException erro) {
+            Logger.getLogger(Util.class.getName()).log(
+                    Level.SEVERE, null, erro);
+        }
+        return byteArray.toByteArray();
     }
 }

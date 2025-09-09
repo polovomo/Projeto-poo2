@@ -6,18 +6,29 @@
 package model;
 
 import java.util.Date;
+import javax.swing.Icon;
 
 /**
  *
  * @author Administrador
  */
 public class Usuario {
+
     private int pkUsuario;
     private String nome;
     private String email;
     private String senha;
     private Date dataNascimento;
-    private boolean ativo ;
+    private boolean ativo;
+    private Icon imagem;
+
+    public void setImagem(Icon imagem) {
+        this.imagem = imagem;
+    }
+
+    public Icon getImagem() {
+        return imagem;
+    }
 
     public void setPkUsuario(int pkUsuario) {
         this.pkUsuario = pkUsuario;
@@ -66,14 +77,13 @@ public class Usuario {
     public boolean isAtivo() {
         return ativo;
     }
-    
-    
-    public String getAtivoString(){
-        if(ativo){
+
+    public String getAtivoString() {
+        if (ativo) {
             return "Ativo";
-        }else{
+        } else {
             return "Inativo";
         }
     }
-    
+
 }
