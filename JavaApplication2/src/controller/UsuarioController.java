@@ -4,11 +4,16 @@
  */
 package controller;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.List;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import model.Usuario;
 import utils.Util;
@@ -83,7 +88,7 @@ public class UsuarioController {
             comando.setBytes(6, Util.converterIconToBytes(usu.getImagem()));
 
             // Executa a consulta no banco de dados
-            comando.executeQuery();
+            comando.executeUpdate();
             return true;
 
         } catch (SQLException e) {
@@ -147,9 +152,19 @@ public class UsuarioController {
 
                 usu.setAtivo(resultado.getBoolean("ativo"));
 
+                byte[] bytes = resultado.getBytes("imagem");
+
+                if (bytes != null) {
+                    ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+
+                    BufferedImage imagem = ImageIO.read(bis);
+                    
+                    usu.setImagem(new  ImageIcon(imagem));
+                }
+
                 lista.add(usu);
             }
-        } catch (SQLException e) {
+        } catch (SQLException | IOException e) {
             // Em caso de erro, exibe uma mensagem para o usuário
             JOptionPane.showMessageDialog(null, e.getMessage());
         } finally {
@@ -163,7 +178,7 @@ public class UsuarioController {
     public boolean alterar(Usuario usu) {
         // Comando SQL para verificar se existe um usuário ativo com o email e senha informados
         String sql = "UPDATE TBUSUARIO SET "
-                + "nome = ?, email = ? ,datanasc = ?, ativo  = ? ";
+                + "nome = ?, email = ? ,datanasc = ?, ativo  = ? , imagem = ?";
 
         if (usu.getSenha() != null) {
             sql += ",senha = ?";
@@ -186,12 +201,13 @@ public class UsuarioController {
 
             comando.setDate(3, new java.sql.Date(usu.getDataNascimento().getTime()));
             comando.setBoolean(4, usu.isAtivo());
+            comando.setBytes(5, Util.converterIconToBytes(usu.getImagem()));
 
             if (usu.getSenha() != null) {
-                comando.setString(5, usu.getSenha());
-                comando.setInt(6, usu.getPkUsuario());
+                comando.setString(6, usu.getSenha());
+                comando.setInt(7, usu.getPkUsuario());
             } else {
-                comando.setInt(5, usu.getPkUsuario());
+                comando.setInt(6, usu.getPkUsuario());
             }
 
             // Executa a consulta no banco de dados
